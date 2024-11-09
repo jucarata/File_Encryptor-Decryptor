@@ -1,11 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>File Encryptor/Decryptor</title>
+
+
+    <link href="{{ url_for('static', filename='index.css') }}" rel="stylesheet">
 </head>
 <body>
-    <h1>Bienvenido al cifrador y descifrador de archivos</h1>
+
+    <div class="container">
+        <div class="header">
+            <h1>File Encryptor/Decryptor</h1>
+        </div>
+        <div class="content">
+            <h2>Select Mode</h2>
+
+            <div class="file-input-box">
+                <input type="file" class="hidden" id="file-input">
+            </div>
+
+            <input type="password" placeholder="Password" class="password-input">
+
+            <div class="button-group">
+                <button onclick="encryptFile()" class="button">Encrypt</button>
+                <button onclick="decryptFile()" class="button">Decrypt</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function encryptFile() {
+            alert("Cifrando archivo...");
+        }
+
+        function decryptFile() {
+            alert("Descifrando archivo...");
+        }
+    </script>
+
 </body>
 </html>
