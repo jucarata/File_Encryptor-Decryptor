@@ -30,7 +30,14 @@ def process():
         return send_file(output, as_attachment=True, download_name=f"{file_name}.cif")
     
     elif action == "decrypt":
-        return "No implemented"
+        decrypted_data = decryptor.decrypt(file_data, password)
+        output = process_data(decrypted_data)
+
+        if decrypted_data == file_data:
+            return send_file(output, as_attachment=True, download_name=f"{file_name}.cif")
+        else:
+            return send_file(output, as_attachment=True, download_name=f"{file_name}")
+
 
     else:
         return "Acción no válida", 400
