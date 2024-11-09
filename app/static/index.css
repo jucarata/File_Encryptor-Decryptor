@@ -1,0 +1,103 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+
+    background: linear-gradient(135deg, #87fa87, #82d482, #7ce67c, #3cbd31, #31f731);
+    background-size: 400% 400%;
+    animation: greenElectricEffect 15s ease infinite;
+    font-family: inter, sans-serif;
+    line-height: 1.5;
+}
+
+@keyframes greenElectricEffect {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.header {
+    background-color: #58d68d;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+}
+
+.header h1 {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.content {
+    padding: 1.5rem;
+}
+
+.content h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.file-input-box {
+    border: 2px solid #d1d5db;
+    border-radius: 0.5rem;
+    height: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.file-input-box label {
+    color: #6b7280;
+    cursor: pointer;
+}
+
+.password-input {
+    width: 100%;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.button-group {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.button {
+    flex: 1;
+    background-color: #58d68d;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s;
+}
+
+.button:hover {
+    background-color: #4CAF50;
+}
