@@ -13,7 +13,7 @@ class Encryptor:
         pass
 
     
-    def __generate_key(password: str, salt=None):
+    def __generate_key(self, password: str, salt=None):
         if salt is None:
             salt = os.urandom(16) # Se acostumbra usar una salt de 16 bytes
 
