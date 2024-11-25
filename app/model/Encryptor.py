@@ -29,27 +29,31 @@ class Encryptor:
 
         return key, salt
 
-    def encrypt(self, file, password: str):
-
-        # El hash SHA-256 del archivo original (Lo pide como req)
+    def encrypt(self, file, password: str, file_extension: str):
+        # Genera el hash SHA-256 del archivo original
         sha256_hash = hashlib.sha256(file).digest()
 
-        key, salt = self.__generate_key(password) # Se genera la clave
-        iv = os.urandom(16)  # Vector de inicialización de 16 bytes para AES
+        # Genera la clave y el IV
+        key, salt = self.__generate_key(password)
+        iv = os.urandom(16)
 
-        # Configura el cifrador AES en modo CBC y crea la instancia del encryptor
+        # Configura el cifrador AES en modo CBC
         cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
         encryptor = cipher.encryptor()
 
-        # Rellena los datos para que se ajusten al tamaño de bloque de AES (128 bits)
+        # Rellena los datos para que se ajusten al tamaño de bloque de AES
         padder = padding.PKCS7(128).padder()
         padded_data = padder.update(file) + padder.finalize()
 
         # Cifra los datos
         encrypted_data = encryptor.update(padded_data) + encryptor.finalize()
 
-        # Organiza la salida (Primero el salt, luego el iv, luego el encrypted file y por ultimo el hash del archivo origial)
-        encrypted_output = salt + iv + encrypted_data + sha256_hash
+        # Codifica la extensión del archivo
+        encoded_extension = file_extension.encode('utf-8')
+        extension_length = len(encoded_extension).to_bytes(1, 'big')
+
+        # Estructura del archivo cifrado
+        encrypted_output = salt + iv + extension_length + encoded_extension + encrypted_data + sha256_hash
 
         return encrypted_output
     

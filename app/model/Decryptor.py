@@ -24,23 +24,28 @@ class Decryptor:
         return key
 
     def decrypt(self, encrypted_file, password: str):
-        # Se extrae el salt, iv, encrypted_data y original_hash
+        # Extrae el salt y el iv
         salt = encrypted_file[:16]
         iv = encrypted_file[16:32]
-        encrypted_data = encrypted_file[32:-32]
+
+        # Extrae la longitud y la extensión del archivo
+        extension_length = int.from_bytes(encrypted_file[32:33], 'big')
+        encoded_extension = encrypted_file[33:33 + extension_length]
+        file_extension = encoded_extension.decode('utf-8')
+
+        # Extrae los datos cifrados y el hash
+        encrypted_data = encrypted_file[33 + extension_length:-32]
         original_hash = encrypted_file[-32:]
 
-        # Genera la clave que es la que se usa para cifrar y descifrar
+        # Genera la clave
         key = self.__generate_key(password, salt)
 
-        # Configura el descifrador AES en modo CBC
+        # Configura el descifrador AES
         cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
-        # En este caso el cipher se configura en modo decryptor
         decryptor = cipher.decryptor()
 
-
         try:
-            # Descifra y elimina el relleno de los datos
+            # Descifra y elimina el relleno
             padded_data = decryptor.update(encrypted_data) + decryptor.finalize()
             unpadder = padding.PKCS7(128).unpadder()
             data = unpadder.update(padded_data) + unpadder.finalize()
@@ -50,7 +55,7 @@ class Decryptor:
             if computed_hash != original_hash:
                 raise ValueError("Error de integridad: el archivo descifrado no coincide con el original.")
 
-            return data
+            return data, file_extension
         
         except Exception:
             return encrypted_file

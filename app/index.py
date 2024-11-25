@@ -19,24 +19,24 @@ def process():
     action = request.form['action']
     
     file_data = file.read()
-    file_name = getFileName(file.filename)
+    file_name, extension = getFileNameAndExtension(file.filename)
     
     encryptor = Encryptor()
     decryptor = Decryptor()
 
     if action == "encrypt":
-        encrypted_data = encryptor.encrypt(file_data, password)
+        encrypted_data = encryptor.encrypt(file_data, password, extension)
         output = process_data(encrypted_data)
         return send_file(output, as_attachment=True, download_name=f"{file_name}.cif")
     
     elif action == "decrypt":
-        decrypted_data = decryptor.decrypt(file_data, password)
+        decrypted_data, file_extension = decryptor.decrypt(file_data, password)
         output = process_data(decrypted_data)
 
         if decrypted_data == file_data:
             return send_file(output, as_attachment=True, download_name=f"{file_name}.cif")
         else:
-            return send_file(output, as_attachment=True, download_name=f"{file_name}")
+            return send_file(output, as_attachment=True, download_name=f"{file_name}.{file_extension}")
 
 
     else:
@@ -49,8 +49,11 @@ def process_data(data):
     return output_file
 
 
-def getFileName(file):
-    return file.rsplit(".", 1)[0]
+def getFileNameAndExtension(file):
+    parts = file.rsplit(".", 1)
+    name = parts[0]
+    extension = parts[1] if len(parts) == 2 else ""
+    return name, f".{extension}" if extension else extension
 
 if __name__ == '__main__':
     app.run(debug=True)
